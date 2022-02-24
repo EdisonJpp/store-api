@@ -1,0 +1,10 @@
+input CategoryChildSaveInput {
+  id: Int
+  name: String
+  params: [CategoryChildParamInput]
+}
+
+type Mutation {
+  removeCategoryChild(id: Int!): CategoryChild
+  saveCategoryChild(data: CategoryChildSaveInput): CategoryChild
+}

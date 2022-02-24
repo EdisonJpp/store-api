@@ -1,0 +1,4 @@
+input PostParamInput {
+  answer: Int
+  paramId: Int
+}

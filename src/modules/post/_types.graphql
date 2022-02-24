@@ -1,0 +1,34 @@
+type Commission {
+  id: Int
+  commission: Int
+  commissionIn: String
+  expirationDate: String
+}
+
+type TypeCurrency {
+  id: Int!
+  name: String!
+}
+
+type PostStatus {
+  id: Int!
+  name: String!
+}
+
+type Post {
+  id: Int
+  name: String
+  price: Float
+  statusId: Int
+  images: [String]
+  description: String
+  user: User
+  status: PostStatus
+  typeCurrency: TypeCurrency
+  commission: Commission
+  params: [PostParam]
+}
+
+type Query {
+  posts(where: PostWhereInput): [Post]
+}

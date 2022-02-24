@@ -1,0 +1,33 @@
+input UserWhereUniqueInput {
+  id: Int
+}
+
+input UserWhereInput {
+  name: String
+}
+
+input LoginAppInput {
+  email: String
+  userName: String
+  password: String!
+}
+
+input CreateUserInput {
+  name: String!
+  userName: String!
+  password: String!
+  email: String!
+}
+
+input UpdateUserInput {
+  name: String
+  userName: String
+  password: String
+  email: String
+}
+
+type Mutation {
+  createUser(data: CreateUserInput!): User
+  updateUser(data: UpdateUserInput, where: UserWhereUniqueInput!): User
+  loginApp(where: LoginAppInput!): LoginApp
+}

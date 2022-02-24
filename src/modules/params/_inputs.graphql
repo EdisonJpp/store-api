@@ -1,0 +1,15 @@
+input CheckboxParamOptionInput {
+  id: Int
+  name: String
+}
+
+input CheckboxParamInput {
+  id: Int
+  options: [CheckboxParamOptionInput]
+}
+
+input InputParamInput {
+  id: Int
+  min: Int
+  max: Int
+}

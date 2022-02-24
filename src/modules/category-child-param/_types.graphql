@@ -1,0 +1,5 @@
+type CategoryChild {
+  id: Int!
+  param: Param
+  category: CategoryChild
+}

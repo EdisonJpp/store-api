@@ -1,0 +1,12 @@
+type ParamOption {
+  id: Int
+  name: String
+}
+
+type Param {
+  id: Int
+  name: String
+  label: String
+  parameterType: String
+  options: [ParamOption]
+}

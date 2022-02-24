@@ -1,0 +1,18 @@
+type User {
+  id: Int!
+  name: String
+  userName: String
+  password: String
+  email: String
+}
+
+type LoginApp {
+  token: String!
+  profile: User
+}
+
+type Query {
+  user (where: UserWhereUniqueInput, relations: [String]): User
+  users (where: UserWhereInput, relations: [String]): [User]
+  profile (token: String): User
+}

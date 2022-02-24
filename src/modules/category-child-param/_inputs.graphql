@@ -1,0 +1,5 @@
+input CategoryChildParamInput {
+  id: Int
+  paramId: Int
+  categoryId: Int
+}

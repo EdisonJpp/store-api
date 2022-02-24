@@ -1,0 +1,10 @@
+type CategoryChild {
+  id: Int!
+  name: String!
+  params: [Param]
+}
+
+type Query {
+  categoriesChildByParent(categoryParentId: Int!): [CategoryChild]
+  categoryChild(categoryChildId: Int!): CategoryChild
+}

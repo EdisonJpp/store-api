@@ -1,0 +1,44 @@
+input CommissionCreateInput {
+  commission: Int
+  commissionIn: String
+  expirationDate: String
+}
+
+input PostCreateInput {
+  name: String
+  price: Float
+  images: [String]
+  description: String
+
+  userId: Int
+  statusId: Int
+  categoryId: Int
+  typeCurrencyId: Int
+
+  params: [PostParamInput]
+  commission: CommissionCreateInput
+}
+
+input FilterPrice {
+  minValue: Int
+  maxValue: Int
+}
+
+input Filter {
+  categoryParentId: Int
+  categoryChildId: Int
+  searchNameValue: String
+  price: FilterPrice
+}
+
+input PostWhereInput {
+  take: Int
+  skip: Int
+  filter: Filter
+  checkboxParams: [CheckboxParamInput]
+  inputParams: [InputParamInput]
+}
+
+type Mutation {
+  createPost(data: PostCreateInput): Post
+}

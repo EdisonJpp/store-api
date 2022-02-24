@@ -1,0 +1,6 @@
+type PostParam {
+  id: Int
+  answer: Int
+  paramId: Int
+  param: Param
+}
