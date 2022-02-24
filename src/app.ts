@@ -30,18 +30,15 @@ export default function server(): ApolloServer {
         isAuthenticated: null,
       };
 
-      const token = req.headers?.is_authorized;
+      const { is_authorized: token } = req.headers;
 
-      if (token && token !== "null" && token !== "undefined") {
+      if (token && !!["null", "undefined"].includes(token)) {
         authParams.token = token;
         authParams.isAuthenticated = true;
         authParams.userStarted = jwt.verify(
           token,
           process.env.APP_TOKEN_SECRET || "",
-          (err, decoded) => {
-            if (err) return null;
-            return decoded;
-          }
+          (err, decoded) => !err && decoded
         );
       }
 

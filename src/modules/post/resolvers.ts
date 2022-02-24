@@ -13,7 +13,7 @@ export const resolvers: IResolvers = {
   Mutation: {
     createPost: (_, { data: payload }, ctx) => {
       isAuthenticated(ctx);
-      controller.createPost(payload as Post);
+      return controller.createPost(payload as Post);
     },
   },
 };
