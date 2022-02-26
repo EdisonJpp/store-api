@@ -37,7 +37,7 @@ export default function server(): ApolloServer {
         authParams.isAuthenticated = true;
         authParams.userStarted = jwt.verify(
           token,
-          process.env.APP_TOKEN_SECRET || "",
+          process.env.APP_TOKEN_SECRET,
           (err, decoded) => !err && decoded
         );
       }

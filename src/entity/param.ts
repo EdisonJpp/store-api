@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -29,7 +28,6 @@ export class Param {
   @Column({
     type: "jsonb",
     array: false,
-    // default: () => "'[]'",
     nullable: true,
   })
   options: Array<{ id: number; name: string }>;

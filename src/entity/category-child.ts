@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,6 +10,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./category";
+import { generateSlug } from "../helpers";
 import { CategoryChildParam } from "./category-child-param";
 
 @Entity({ name: "t_category_child" })
@@ -18,6 +20,9 @@ export class CategoryChild {
 
   @Column()
   name: string;
+
+  @Column()
+  slug: string;
 
   @Column({ name: "parent_id" })
   parentId: number;
@@ -34,4 +39,9 @@ export class CategoryChild {
 
   @UpdateDateColumn({ name: "update_at" })
   updatedAt: Date;
+
+  @BeforeInsert()
+  setSlug() {
+    this.slug = generateSlug(this.name);
+  }
 }
