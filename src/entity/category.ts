@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -6,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
+import { generateSlug } from "../helpers";
 import { CategoryChild } from "./category-child";
 
 @Entity({ name: "t_categories" })
@@ -16,6 +19,9 @@ export class Category {
   @Column()
   name: string;
 
+  @Column()
+  slug: string;
+
   @OneToMany(() => CategoryChild, (sp) => sp.parent)
   children: CategoryChild[];
 
@@ -24,4 +30,9 @@ export class Category {
 
   @UpdateDateColumn({ name: "update_at" })
   updatedAt: Date;
+
+  @BeforeInsert()
+  setSlug() {
+    this.slug = generateSlug(this.name);
+  }
 }

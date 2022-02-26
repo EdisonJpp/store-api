@@ -17,19 +17,15 @@ export const resolvers: IResolvers = {
     users: (_, { where, relations }) => {
       return getFind<UserEntity>(UserEntity, { where, relations }).findAll();
     },
-    profile: async (_, { token }, { userStarted, ...ctx }) => {
+    profile: async (_, { token }, ctx) => {
       isAuthenticated(ctx);
 
       if (token) {
-        const user = await jwt.verify(
-          token,
-          process.env.APP_TOKEN_SECRET || ""
-        );
-
+        const user = await jwt.verify(token, process.env.APP_TOKEN_SECRET);
         return user.item;
       }
 
-      return userStarted.item;
+      return ctx.userStarted.item;
     },
   },
   Mutation: {
@@ -60,7 +56,7 @@ export const resolvers: IResolvers = {
     },
     createUser: async (_, { data: payload }) => {
       return getMutation<UserEntity>(UserEntity, {
-        payload: { ...payload },
+        payload,
       }).save();
     },
     updateUser: async (_, { data, where }, ctx) => {

@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { generateSlug } from "../helpers";
 import { CategoryChild } from "./category-child";
-
 import { PostCommission } from "./post-commission";
 import { PostParam } from "./post-param";
 import { PostStatus } from "./post-status";
@@ -25,6 +26,9 @@ export class Post {
 
   @Column()
   name: string;
+
+  @Column()
+  slug: string;
 
   @Column()
   price: number;
@@ -85,4 +89,9 @@ export class Post {
 
   @UpdateDateColumn({ name: "update_at" })
   updatedAt: Date;
+
+  @BeforeInsert()
+  setSlug() {
+    this.slug = generateSlug(this.name);
+  }
 }

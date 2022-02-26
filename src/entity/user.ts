@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -9,8 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { SALT_ROUNDS } from "../helpers/index";
-const bcrypt = require("bcrypt");
+import { generateSlug, SALT_ROUNDS } from "../helpers/index";
 
 @Unique("email_already_exist", ["email"])
 @Unique("username_already_exist", ["userName"])
@@ -25,14 +26,9 @@ export class UserEntity {
   @Column({ name: "user_name" })
   userName: string;
 
-  @BeforeInsert()
-  beforeInsert() {
-    this.hash();
-  }
-  @BeforeUpdate()
-  beforeUpdate() {
-    this.hash();
-  }
+  @Column({ name: "slug" })
+  slug: string;
+
   @Column({ name: "password" })
   password: string;
 
@@ -44,6 +40,17 @@ export class UserEntity {
 
   @UpdateDateColumn({ name: "update_at" })
   updatedAt: Date;
+
+  @BeforeInsert()
+  async beforeInsert() {
+    this.slug = generateSlug(this.name);
+    await this.hash();
+  }
+
+  @BeforeUpdate()
+  async beforeUpdate() {
+    await this.hash();
+  }
 
   async hash() {
     if (this.password)
