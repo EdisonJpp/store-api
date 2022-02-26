@@ -4,7 +4,7 @@ import { getMutation } from "../../helpers/builder";
 import { getFind } from "../../helpers/builder";
 import { UserEntity } from "../../entity/user";
 import { IResolvers } from "../../types";
-import { isAuthenticated, SALT_ROUNDS } from "../../helpers/index";
+import { isAuthenticated } from "../../helpers/index";
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -59,20 +59,14 @@ export const resolvers: IResolvers = {
       };
     },
     createUser: async (_, { data: payload }) => {
-      const password = await bcrypt.hash(payload.password, SALT_ROUNDS);
       return getMutation<UserEntity>(UserEntity, {
-        payload: { ...payload, password },
+        payload: { ...payload },
       }).save();
     },
     updateUser: async (_, { data, where }, ctx) => {
       isAuthenticated(ctx);
 
-      const password = data.password
-        ? await bcrypt.hash(data.password, SALT_ROUNDS)
-        : null;
-
-      const payload = omitBy({ ...data, password }, isNil) as UserEntity;
-
+      const payload = omitBy({ ...data }, isNil) as UserEntity;
       return getMutation<UserEntity>(UserEntity, {
         where,
         payload,
