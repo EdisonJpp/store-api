@@ -7,4 +7,5 @@ type Category {
 
 type Query {
   categories: [Category]
+  categoryBySlug(slug: String!): Category
 }

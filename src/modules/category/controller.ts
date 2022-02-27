@@ -16,8 +16,35 @@ async function categories(cache) {
   return categories;
 }
 
+async function categoryBySlug(slug: string, cache) {
+  const key = cacheKeys.categoryBySlug.replace(":slug", slug);
+
+  const cacheCategory = await cache.get(key);
+  if (!!cacheCategory) return JSON.parse(cacheCategory);
+
+  const category = await createQueryBuilder<Category>(Category, "category")
+    .select([
+      "category.id",
+      "category.name",
+      "category.slug",
+      "children.id",
+      "children.name",
+      "children.slug",
+    ])
+    .leftJoin(
+      "category.children",
+      "children",
+      "children.parentId = category.id"
+    )
+    .getOne();
+
+  await cache.set(key, JSON.stringify(category));
+  return category;
+}
+
 export {
   // *** Queries *** //
   categories,
+  categoryBySlug,
   // ** Mutation ** //
 };
