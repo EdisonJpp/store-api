@@ -1,7 +1,7 @@
-import { Category } from "../../entity/category";
-import { createQueryBuilder } from "typeorm";
-
 import * as cacheKeys from "./cache-keys";
+
+import { createQueryBuilder } from "typeorm";
+import { Category } from "../../entity/category";
 
 // *** Queries *** //
 async function categories(cache) {
@@ -9,7 +9,7 @@ async function categories(cache) {
   if (!!cacheCategories) return JSON.parse(cacheCategories);
 
   const categories = await createQueryBuilder<Category>(Category, "category")
-    .select(["category.id", "category.name"])
+    .select(["category.id", "category.name", "category.slug"])
     .getMany();
 
   await cache.set(cacheKeys.categories, JSON.stringify(categories));

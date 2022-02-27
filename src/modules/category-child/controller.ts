@@ -19,7 +19,7 @@ async function categoriesChildByParent(categoryParentId: number, cache) {
     CategoryChild,
     "categoryChild"
   )
-    .select(["categoryChild.id", "categoryChild.name"])
+    .select(["categoryChild.id", "categoryChild.name", "categoryChild.slug"])
     .where("categoryChild.parentId = :categoryParentId", {
       categoryParentId,
     })
@@ -42,13 +42,14 @@ async function categoryChild(categoryChildId: number, cache) {
     .select([
       "categoryChild.id",
       "categoryChild.name",
-      "params.id",
-      "categoryParams.id",
-      "categoryParams.name",
-      "categoryParams.options",
+      "categoryParam.id",
+      "param.parameterType",
+      "param.id",
+      "param.name",
+      "param.options",
     ])
-    .leftJoin("categoryChild.params", "params")
-    .leftJoin("params.param", "categoryParams")
+    .leftJoin("categoryChild.params", "categoryParam")
+    .leftJoin("categoryParam.param", "param")
     .where("categoryChild.id = :categoryChildId", { categoryChildId })
     .getOne();
 
@@ -74,7 +75,7 @@ const saveCategoryChild = async (data: CategoryChild, cache) => {
     merged = [...all.filter((it) => it.id !== data.id), saved];
   }
 
-  cache.set(key, JSON.stringify(merged));
+  await cache.set(key, JSON.stringify(merged));
   return saved;
 };
 
@@ -92,7 +93,7 @@ const removeCategoryChild = async (id: number, cache) => {
 
   const all = JSON.parse((await cache.get(key)) || "[]");
   const filtered = [...all.filter((it) => it.id !== found.id)];
-  cache.set(key, JSON.stringify(filtered));
+  await cache.set(key, JSON.stringify(filtered));
 
   return found;
 };

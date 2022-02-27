@@ -20,12 +20,20 @@ export const resolvers: IResolvers = {
     profile: async (_, { token }, ctx) => {
       isAuthenticated(ctx);
 
+      if (ctx.userStarted?.item) {
+        return ctx.userStarted?.item;
+      }
+
       if (token) {
-        const user = await jwt.verify(token, process.env.APP_TOKEN_SECRET);
+        const user = jwt.verify(
+          token,
+          process.env.APP_TOKEN_SECRET,
+          (err, decoded) => (!err ? decoded : err)
+        );
         return user.item;
       }
 
-      return ctx.userStarted.item;
+      throw "Unauthenticated";
     },
   },
   Mutation: {

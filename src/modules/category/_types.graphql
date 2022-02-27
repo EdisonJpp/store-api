@@ -1,6 +1,7 @@
 type Category {
   id: Int!
   name: String!
+  slug: String
   children: [CategoryChild]
 }
 

@@ -32,7 +32,7 @@ export default function server(): ApolloServer {
 
       const { is_authorized: token } = req.headers;
 
-      if (token && !!["null", "undefined"].includes(token)) {
+      if (token && !["null", "undefined"].includes(token)) {
         authParams.token = token;
         authParams.isAuthenticated = true;
         authParams.userStarted = jwt.verify(

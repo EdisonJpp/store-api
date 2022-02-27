@@ -1,4 +1,4 @@
-type CategoryChild {
+type CategoryChildParam {
   id: Int!
   param: Param
   category: CategoryChild

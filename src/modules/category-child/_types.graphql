@@ -1,7 +1,8 @@
 type CategoryChild {
   id: Int!
   name: String!
-  params: [Param]
+  slug: String
+  params: [CategoryChildParam]
 }
 
 type Query {
