@@ -4,33 +4,8 @@ import { CategoryChild } from "../../entity/category-child";
 import * as cacheKeys from "./cache-keys";
 
 // *** Queries *** //
-async function categoriesChildByParent(categoryParentId: number, cache) {
-  const key = cacheKeys.categoriesChildByParent.replace(
-    ":parentId",
-    categoryParentId + ""
-  );
-  const cacheCategoriesChildByParent = await cache.get(key);
-
-  if (!!cacheCategoriesChildByParent) {
-    return JSON.parse(cacheCategoriesChildByParent);
-  }
-
-  const categoriesChild = await createQueryBuilder<CategoryChild>(
-    CategoryChild,
-    "categoryChild"
-  )
-    .select(["categoryChild.id", "categoryChild.name", "categoryChild.slug"])
-    .where("categoryChild.parentId = :categoryParentId", {
-      categoryParentId,
-    })
-    .getMany();
-
-  await cache.set(key, JSON.stringify(categoriesChild));
-  return categoriesChild;
-}
-
-async function categoryChild(categoryChildId: number, cache) {
-  const cacheKey = cacheKeys.categoryChild.replace(":id", `${categoryChildId}`);
+async function categoryChildBySlug(slug: string, cache) {
+  const cacheKey = cacheKeys.categoryChildBySlug.replace(":slug", slug);
 
   const cacheCategoryChild = await cache.get(cacheKey);
   if (!!cacheCategoryChild) return JSON.parse(cacheCategoryChild);
@@ -50,7 +25,7 @@ async function categoryChild(categoryChildId: number, cache) {
     ])
     .leftJoin("categoryChild.params", "categoryParam")
     .leftJoin("categoryParam.param", "param")
-    .where("categoryChild.id = :categoryChildId", { categoryChildId })
+    .where("categoryChild.slug = :slug", { slug })
     .getOne();
 
   await cache.set(cacheKey, JSON.stringify(child));
@@ -99,8 +74,7 @@ const removeCategoryChild = async (id: number, cache) => {
 };
 
 export {
-  categoriesChildByParent,
-  categoryChild,
+  categoryChildBySlug,
   // ** Mutation ** //
   saveCategoryChild,
   removeCategoryChild,

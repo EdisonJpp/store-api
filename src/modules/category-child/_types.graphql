@@ -6,6 +6,5 @@ type CategoryChild {
 }
 
 type Query {
-  categoriesChildByParent(categoryParentId: Int!): [CategoryChild]
-  categoryChild(categoryChildId: Int!): CategoryChild
+  categoryChildBySlug(slug: String!): CategoryChild
 }

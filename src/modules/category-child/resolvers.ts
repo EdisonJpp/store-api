@@ -6,11 +6,8 @@ import { isAuthenticated } from "../../helpers";
 
 export const resolvers: IResolvers = {
   Query: {
-    categoriesChildByParent: async (_, { categoryParentId }, ctx) => {
-      return controller.categoriesChildByParent(categoryParentId, ctx.cache);
-    },
-    categoryChild: async (_, { categoryChildId }, { cache }) => {
-      return controller.categoryChild(categoryChildId, cache);
+    categoryChildBySlug: (_, { slug }, { cache }) => {
+      return controller.categoryChildBySlug(slug, cache);
     },
   },
   Mutation: {
