@@ -1,8 +1,8 @@
-import * as controller from "./controller";
+import * as controller from './controller';
 
-import { IResolvers } from "../../types";
-import { CategoryChild } from "@entity/category-child";
-import { isAuthenticated } from "../../helpers";
+import { IResolvers } from '../../types';
+import { CategoryChild } from '@entity/category-child';
+import { isAuthenticated } from '../../helpers';
 
 export const resolvers: IResolvers = {
   Query: {
@@ -15,7 +15,7 @@ export const resolvers: IResolvers = {
       isAuthenticated(ctx);
       return controller.removeCategoryChild(id, ctx.cache);
     },
-    saveCategoryChild: (_, { data }: { data: CategoryChild }, ctx) => {
+    saveCategoryChild: (_, { data }: {data: CategoryChild}, ctx) => {
       isAuthenticated(ctx);
       return controller.saveCategoryChild(data, ctx.cache);
     },
