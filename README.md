@@ -2,11 +2,11 @@
 
 ## Features
 
-- Filter post by params
+- Filter post by dynamic params, general params, category and sub-category
 - Auth
 - user; create and encripting password, update and remove.
-- categorie; getAll
-- sub-categories; CRUD and get by parentId
+- Categorie; getAll
+- Sub-categories; CRUD, get by slug, get by parent
 
 ## Tech
 
