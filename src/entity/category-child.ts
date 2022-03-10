@@ -8,12 +8,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { Category } from "./category";
-import { generateSlug } from "../helpers";
-import { CategoryChildParam } from "./category-child-param";
+} from 'typeorm';
+import { Category } from './category';
+import { generateSlug } from '../helpers';
+import { CategoryChildParam } from './category-child-param';
 
-@Entity({ name: "t_category_child" })
+@Entity({ name: 't_category_child' })
+/** This is relations table categoryChild and category */
 export class CategoryChild {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,22 +25,23 @@ export class CategoryChild {
   @Column()
   slug: string;
 
-  @Column({ name: "parent_id" })
+  @Column({ name: 'parent_id' })
   parentId: number;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: "parent_id" })
+  @JoinColumn({ name: 'parent_id' })
   parent: Category;
 
   @OneToMany(() => CategoryChildParam, (ccp) => ccp.categoryChild)
   params: CategoryChildParam[];
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: "update_at" })
+  @UpdateDateColumn({ name: 'update_at' })
   updatedAt: Date;
 
+  /** Set slug before in insert */
   @BeforeInsert()
   setSlug() {
     this.slug = generateSlug(this.name);

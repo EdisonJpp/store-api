@@ -6,11 +6,12 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { Param } from "./param";
-import { Post } from "./post";
+} from 'typeorm';
+import { Param } from './param';
+import { Post } from './post';
 
-@Entity({ name: "t_post_params" })
+@Entity({ name: 't_post_params' })
+/** these are related between posts and params */
 export class PostParam {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,23 +19,23 @@ export class PostParam {
   @Column()
   answer: string;
 
-  @Column({ name: "param_id" })
+  @Column({ name: 'param_id' })
   paramId: number;
 
   @ManyToOne(() => Param)
-  @JoinColumn({ name: "param_id" })
+  @JoinColumn({ name: 'param_id' })
   param: Param;
 
-  @Column({ name: "post_id" })
+  @Column({ name: 'post_id' })
   postId: number;
 
-  @ManyToOne(() => Post, { orphanedRowAction: "delete" })
-  @JoinColumn({ name: "post_id" })
+  @ManyToOne(() => Post, { orphanedRowAction: 'delete' })
+  @JoinColumn({ name: 'post_id' })
   post: Post;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: "update_at" })
+  @UpdateDateColumn({ name: 'update_at' })
   updatedAt: Date;
 }

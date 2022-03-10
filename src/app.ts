@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
-import { UserEntity } from "./entity/user";
-import { typeDefs, resolvers } from "./lib/schema";
-import { ApolloServer, CorsOptions } from "apollo-server";
-import createClient from "./lib/cache";
+import { UserEntity } from './entity/user';
+import { typeDefs, resolvers } from './lib/schema';
+import { ApolloServer, CorsOptions } from 'apollo-server';
+import createClient from './lib/cache';
 
 interface IAuthParams {
   userStarted: UserEntity | null;
@@ -11,9 +11,13 @@ interface IAuthParams {
   isAuthenticated: boolean | null;
 }
 
+/**
+ * filter by dynamic params and general params, category.
+ * @return {ApolloServer} server.
+ */
 export default function server(): ApolloServer {
   const cors: CorsOptions = {
-    origin: "*",
+    origin: '*',
     credentials: true,
   };
 
@@ -32,13 +36,13 @@ export default function server(): ApolloServer {
 
       const { is_authorized: token } = req.headers;
 
-      if (token && !["null", "undefined"].includes(token)) {
+      if (token && !['null', 'undefined'].includes(token)) {
         authParams.token = token;
         authParams.isAuthenticated = true;
         authParams.userStarted = jwt.verify(
-          token,
-          process.env.APP_TOKEN_SECRET,
-          (err, decoded) => !err && decoded
+            token,
+            process.env.APP_TOKEN_SECRET,
+            (err, decoded) => !err && decoded,
         );
       }
 

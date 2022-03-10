@@ -1,2 +1,2 @@
-export * from "./posts";
-export * from "./resolver";
+export * from './posts';
+export * from './resolver';

@@ -1,13 +1,13 @@
-import { isNil, omitBy } from "lodash";
-import { getMutation } from "../../helpers/builder";
+import { isNil, omitBy } from 'lodash';
+import { getMutation } from '../../helpers/builder';
 
-import { getFind } from "../../helpers/builder";
-import { UserEntity } from "../../entity/user";
-import { IResolvers } from "../../types";
-import { isAuthenticated } from "../../helpers/index";
+import { getFind } from '../../helpers/builder';
+import { UserEntity } from '../../entity/user';
+import { IResolvers } from '../../types';
+import { isAuthenticated } from '../../helpers/index';
 
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 export const resolvers: IResolvers = {
   Query: {
@@ -26,14 +26,14 @@ export const resolvers: IResolvers = {
 
       if (token) {
         const user = jwt.verify(
-          token,
-          process.env.APP_TOKEN_SECRET,
-          (err, decoded) => (!err ? decoded : err)
+            token,
+            process.env.APP_TOKEN_SECRET,
+            (err, decoded) => (!err ? decoded : err),
         );
         return user.item;
       }
 
-      throw "Unauthenticated";
+      throw Error('Unauthenticated');
     },
   },
   Mutation: {
@@ -42,19 +42,19 @@ export const resolvers: IResolvers = {
         where: { email: where.email },
       }).findOne();
 
-      if (!item) throw Error("Data incorrect");
+      if (!item) throw Error('Data incorrect');
 
       const passwordVerified = await bcrypt.compare(
-        where.password,
-        item.password
+          where.password,
+          item.password,
       );
       const emailVerified = item.email === where.email;
 
-      if (!passwordVerified) throw Error("Data incorrect");
-      if (!emailVerified) throw Error("Data incorrect");
+      if (!passwordVerified) throw Error('Data incorrect');
+      if (!emailVerified) throw Error('Data incorrect');
 
       const token = jwt.sign({ item }, process.env.APP_TOKEN_SECRET, {
-        expiresIn: "23hr",
+        expiresIn: '23hr',
       });
 
       return {

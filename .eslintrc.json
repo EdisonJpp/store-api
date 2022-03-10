@@ -11,6 +11,8 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "object-curly-spacing": [2, "always"]
+    "object-curly-spacing": [2, "always"],
+    "new-cap": 0
+
   }
 }

@@ -5,10 +5,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   OneToMany,
-} from "typeorm";
-import { Post } from "./post";
+} from 'typeorm';
+import { Post } from './post';
 
-@Entity({ name: "t_stores", schema: "public" })
+@Entity({ name: 't_stores', schema: 'public' })
+/** this is store table, are related with user and post */
 export class Store {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,18 +17,18 @@ export class Store {
   @Column()
   name: string;
 
-  @Column({ name: "user_id" })
+  @Column({ name: 'user_id' })
   userId: number;
 
   @OneToMany(() => Post, (sp) => sp.store)
   posts: Post[];
 
-  @Column({ name: "email" })
+  @Column({ name: 'email' })
   email: string;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: "update_at" })
+  @UpdateDateColumn({ name: 'update_at' })
   updatedAt: Date;
 }

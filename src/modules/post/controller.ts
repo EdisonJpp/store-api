@@ -1,11 +1,15 @@
-import { Post } from "../../entity/post";
-import { IFilterParams } from "../../types";
-import { getMutation } from "../../helpers/builder";
-import { createQueryBuilder } from "typeorm";
-import { VALIDATE_CHECKBOX_TYPE_PARAMS } from "./queries";
+import { Post } from '../../entity/post';
+import { IFilterParams } from '../../types';
+import { getMutation } from '../../helpers/builder';
+import { createQueryBuilder } from 'typeorm';
+import { VALIDATE_CHECKBOX_TYPE_PARAMS } from './queries';
 
-//** Queries  **/
-const postWithFilter = ({ where }: IFilterParams) => {
+/**
+ * filter by dynamic params and general params, category.
+ * @param {IFilterParams} where slug .
+ * @return {Post[]} posts.
+ */
+async function postWithFilter({ where }: IFilterParams) {
   const {
     take = 20,
     skip = 0,
@@ -16,16 +20,16 @@ const postWithFilter = ({ where }: IFilterParams) => {
 
   const { categoryParentId, categoryChildId, searchNameValue, price } = filter;
 
-  const items = createQueryBuilder<Post>(Post, "post").where(
-    "post.statusId = 1"
+  const items = createQueryBuilder<Post>(Post, 'post').where(
+      'post.statusId = 1',
   );
 
   if (categoryParentId) {
     items.innerJoin(
-      "post.category",
-      "categoryChild",
-      "categoryChild.parentId = :categoryParentId",
-      { categoryParentId }
+        'post.category',
+        'categoryChild',
+        'categoryChild.parentId = :categoryParentId',
+        { categoryParentId },
     );
   }
 
@@ -36,15 +40,15 @@ const postWithFilter = ({ where }: IFilterParams) => {
       return it.id;
     });
 
-    items.innerJoin("post.params", "postParamsCheck");
+    items.innerJoin('post.params', 'postParamsCheck');
     items.innerJoin(
-      "postParamsCheck.param",
-      "param",
-      VALIDATE_CHECKBOX_TYPE_PARAMS,
-      {
-        optionIds,
-        paramIds,
-      }
+        'postParamsCheck.param',
+        'param',
+        VALIDATE_CHECKBOX_TYPE_PARAMS,
+        {
+          optionIds,
+          paramIds,
+        },
     );
   }
 
@@ -54,62 +58,67 @@ const postWithFilter = ({ where }: IFilterParams) => {
       const param = `paramInput${index + 1}`;
 
       items
-        .innerJoin(
-          "post.params",
-          `${postParams}`,
-          `${postParams}.postId = post.id`
-        )
-        .innerJoin(
-          `${postParams}.param`,
-          `${param}`,
-          `${param}.id = :id
+          .innerJoin(
+              'post.params',
+              `${postParams}`,
+              `${postParams}.postId = post.id`,
+          )
+          .innerJoin(
+              `${postParams}.param`,
+              `${param}`,
+              `${param}.id = :id
             AND ${param}.parameterType = 'INPUT'
             AND ${postParams}.answer::INT BETWEEN :min AND :max
           `,
-          { ...inputParam }
-        );
+              { ...inputParam },
+          );
     });
   }
 
   if (price) {
-    items.andWhere("post.price BETWEEN :minValue AND :maxValue", price);
+    items.andWhere('post.price BETWEEN :minValue AND :maxValue', price);
   }
 
   if (categoryChildId) {
-    items.andWhere("post.categoryId = :categoryChildId", {
+    items.andWhere('post.categoryId = :categoryChildId', {
       categoryChildId,
     });
   }
 
   if (searchNameValue) {
-    items.andWhere("LOWER(post.name) LIKE LOWER(:name)", {
+    items.andWhere('LOWER(post.name) LIKE LOWER(:name)', {
       name: `%${searchNameValue}%`,
     });
   }
 
   return items
-    .select([
-      "post.id",
-      "post.name",
-      "post.price",
-      "post.images",
-      "commission.commission",
-      "commission.commissionIn",
-    ])
-    .leftJoin("post.user", "user", "user.id = post.userId")
-    .leftJoin("post.store", "store", "store.id = post.store.id")
-    .leftJoin(
-      "post.commission",
-      "commission",
-      "commission.id = post.commissionId"
-    )
-    .skip(skip)
-    .take(take)
-    .getMany();
+      .select([
+        'post.id',
+        'post.name',
+        'post.price',
+        'post.images',
+        'commission.commission',
+        'commission.commissionIn',
+      ])
+      .leftJoin('post.user', 'user', 'user.id = post.userId')
+      .leftJoin('post.store', 'store', 'store.id = post.store.id')
+      .leftJoin(
+          'post.commission',
+          'commission',
+          'commission.id = post.commissionId',
+      )
+      .skip(skip)
+      .take(take)
+      .getMany();
 };
 
 // *** Mutations *** //
-const createPost = (data: Post) => {
+/**
+ * create post.
+ * @param {Post} data slug .
+ * @return {Post} post.
+ */
+async function createPost(data: Post) {
   return getMutation<Post>(Post, { payload: data }).save();
 };
 

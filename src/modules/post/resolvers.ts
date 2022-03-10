@@ -1,9 +1,9 @@
-import * as controller from "./controller";
+import * as controller from './controller';
 
-import { Post } from "../../entity/post";
-import { IResolvers } from "../../types";
-import { IFilterParams } from "../../types";
-import { isAuthenticated } from "../../helpers";
+import { Post } from '../../entity/post';
+import { IResolvers } from '../../types';
+import { IFilterParams } from '../../types';
+import { isAuthenticated } from '../../helpers';
 
 export const resolvers: IResolvers = {
   Query: {

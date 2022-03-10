@@ -4,9 +4,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
-@Entity({ name: "t_type_currency" })
+@Entity({ name: 't_type_currency' })
+/** this is type currency table */
 export class TypeCurrency {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,9 +15,9 @@ export class TypeCurrency {
   @Column()
   name: string;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: "update_at" })
+  @UpdateDateColumn({ name: 'update_at' })
   updatedAt: Date;
 }

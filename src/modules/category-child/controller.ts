@@ -3,8 +3,13 @@ import { CategoryChild } from '../../entity/category-child';
 
 import * as cacheKeys from './cache-keys';
 
-// *** Queries *** //
-const categoryChildBySlug = async (slug: string, cache) => {
+/**
+ * get categoryChild by slug and set in cache.
+ * @param {string} slug .
+ * @param {any} cache cache client.
+ * @return {CategoryChild} categoryChild.
+ */
+async function categoryChildBySlug(slug: string, cache) {
   const cacheKey = cacheKeys.categoryChildBySlug.replace(':slug', slug);
   const cacheCategoryChild = await cache.get(cacheKey);
   if (!!cacheCategoryChild) return JSON.parse(cacheCategoryChild);
@@ -29,10 +34,15 @@ const categoryChildBySlug = async (slug: string, cache) => {
 
   await cache.set(cacheKey, JSON.stringify(child));
   return child;
-};
+}
 
-// *** Mutations *** //
-const saveCategoryChild = async (data: CategoryChild, cache) => {
+/**
+ * save categoryChild and update cache
+ * @param {CategoryChild} data categoryChild.
+ * @param {any} cache cache client.
+ * @return {CategoryChild} categoryChild.
+ */
+async function saveCategoryChild(data: CategoryChild, cache) {
   const repo = getRepository(CategoryChild);
   const saved = await repo.save(repo.create(data));
 
@@ -51,9 +61,15 @@ const saveCategoryChild = async (data: CategoryChild, cache) => {
 
   await cache.set(key, JSON.stringify(merged));
   return saved;
-};
+}
 
-const removeCategoryChild = async (id: number, cache) => {
+/**
+ * remove categoryChild and update cache
+ * @param {number} id categoryChild's id
+ * @param {any} cache cache client.
+ * @return {CategoryChild} categoryChild
+ */
+async function removeCategoryChild(id: number, cache) {
   const repo = getRepository(CategoryChild);
   const found = await repo.findOne(id);
 
@@ -70,7 +86,7 @@ const removeCategoryChild = async (id: number, cache) => {
   await cache.set(key, JSON.stringify(filtered));
 
   return found;
-};
+}
 
 export {
   categoryChildBySlug,
