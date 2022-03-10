@@ -1,5 +1,5 @@
-import * as controller from "./controller";
-import { IResolvers } from "../../types";
+import * as controller from './controller';
+import { IResolvers } from '../../types';
 
 export const resolvers: IResolvers = {
   Query: {

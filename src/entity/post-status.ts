@@ -4,9 +4,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
-@Entity({ name: "t_post_statuses" })
+@Entity({ name: 't_post_statuses' })
+/** these are related between posts and statuses */
 export class PostStatus {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,9 +15,9 @@ export class PostStatus {
   @Column()
   name: string;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: "update_at" })
+  @UpdateDateColumn({ name: 'update_at' })
   updatedAt: Date;
 }
