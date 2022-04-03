@@ -2,7 +2,7 @@
 
 ## Features
 
-- Filter post by dynamic params, general params, category and sub-category
+- Post: Filter post by dynamic params, general params, category and sub-category
 - Auth
 - user; create and encripting password, update and remove.
 - Categorie; getAll
