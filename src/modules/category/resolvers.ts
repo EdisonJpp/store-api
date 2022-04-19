@@ -1,11 +1,11 @@
-import * as controller from './controller';
+import * as services from './services';
 import { IResolvers } from '../../types';
 
 export const resolvers: IResolvers = {
   Query: {
-    categories: (_, __, { cache }) => controller.categories(cache),
+    categories: (_, __, { cache }) => services.categories(cache),
     categoryBySlug: (_, { slug }, { cache }) =>
-      controller.categoryBySlug(slug, cache),
+      services.categoryBySlug(slug, cache),
   },
   Mutation: {},
 };
